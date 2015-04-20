@@ -1,0 +1,272 @@
+{
+  "nodes":[
+    {"index": 0, "name": "tweets", "type": "circle"},
+    {"index": 1, "name": "buffer", "type": "rect"},
+    {"index": 2, "name": "filter", "type": "rect"},
+    {"index": 3, "name": "convert", "type": "rect"},
+    {"index": 4, "name": "products", "type": "circle"},
+    {"index": 5, "name": "select", "type": "rect"},
+    {"index": 6, "name": "avgSent", "type": "rect"},
+    {"index": 7, "name": "sales", "type": "circle"},
+    {"index": 8, "name": "filter", "type": "rect"},
+    {"index": 9, "name": "totalSales", "type": "rect"},
+    {"index": 10, "name": "join1", "type": "rect"},
+    {"index": 11, "name": "campaign", "type": "circle"},
+    {"index": 12, "name": "filter", "type": "rect"},
+    {"index": 13, "name": "join2", "type": "rect"},
+    {"index": 14, "name": "result", "type": "circle"}
+  ],
+  "edges":[
+    {"source": 0, "target": 1, "value": 1, "dashed": true},
+    {"source": 1, "target": 2, "value": 1},
+    {"source": 2, "target": 3, "value": 1},
+    {"source": 3, "target": 5, "value": 1},
+    {"source": 4, "target": 5, "value": 1, "dashed": true},
+    {"source": 5, "target": 6, "value": 1},
+    {"source": 6, "target": 10, "value": 1},
+    {"source": 7, "target": 8, "value": 1, "dashed": true},
+    {"source": 8, "target": 9, "value": 1},
+    {"source": 9, "target": 10, "value": 1},
+    {"source": 10, "target": 13, "value": 1},
+    {"source": 11, "target": 12, "value": 1, "dashed": true},
+    {"source": 12, "target": 13, "value": 1},
+    {"source": 13, "target": 14, "value": 1, "dashed": true}
+  ],
+  "tasks":[
+    {"name": "tweets reviews", "node_id": "0",
+      "json":
+      {"tweets&reviews": {
+        "constraints": {
+          "data_info": {
+            "attributes": [
+              {"user": {"type": "Varchar(15)"}},
+              {"text": {"type": "Varchar"}},
+              {"coord": {"type": "(Integer, Integer)"}},
+              {"timestamp": {"type": "Integer"}}
+            ]}}
+      }}},
+    {"name": "buffer", "node_id": "1",
+      "json": {}},
+    {"name": "filter by reg&date", "node_id": "2",
+      "json":
+      {"filter_by_reg&date": {
+        "constraints": {
+          "input": {
+            "data_info": {
+              "attributes": ["text", "coord", "timestamp"]}},
+          "output": {
+            "data_info": {
+              "attributes": ["text", "coord", "timestamp"]}},
+          "op_specification": {
+            "algorithm": {
+              "select": {
+                "select_condition": [
+                  "convert(coord) = reg",
+                  "convert(timestamp) >= sD"
+                ]}}}}
+      }}},
+    {"name": "calc&conv", "node_id": "3",
+      "json":
+      {"calc&conv": {
+        "constraints": {
+          "input": {
+            "data_info": {
+              "attributes": ["text", "coord", "timestamp"]}},
+          "output": {
+            "data_info": {
+              "attributes": ["tag", "sentiment", "region", "date"]}},
+          "op_specification": {
+            "algorithm": {
+              "calc": [{
+                "calc_attr": "tag",
+                "calc_expression": "analyse(text)"},
+                {"calc_attr": "sentiment",
+                  "calc_expression": "analyse(text)"},
+                {"calc_attr": "region",
+                  "calc_expression": "convert(coord)"},
+                {"calc_attr": "date",
+                  "calc_expression": "convert(timestamp)"}]}}}
+      }}},
+    {"name": "products", "node_id": "4",
+      "json":{"products": {
+        "constraints": {
+          "data_info": {
+            "attributes": [
+              {"product_id": {"type": "Varchar(15)"}},
+              {"product": {"type": "Varchar(15)"}}
+            ]}}
+      }}},
+    {"name": "select product", "node_id": "5",
+      "json":
+      {"select_product": {
+        "constraints": {
+          "input1": {
+            "data_info": {
+              "attributes": ["tag", "sentiment", "coord", "timestamp"]}},
+          "input2": {
+            "data_info": {
+              "attributes": ["product_id", "product"]}},
+          "output": {
+            "data_info": {
+              "attributes": ["product_id", "sentiment", "coord", "timestamp"]}},
+          "op_specification": {
+            "algorithm": {
+              "select": {
+                "select_condition": [
+                  "compare(product, tag)"
+                ]}}}}
+      }}},
+    {"name": "calc avgSent", "node_id": "6",
+      "json":
+      {"calc_avgSent": {
+        "constraints": {
+          "input": {
+            "data_info": {
+              "attributes": ["product_id", "sentiment", "region", "date"]}},
+          "output": {
+            "data_info": {
+              "attributes": ["product_id", "avgSentiment", "region", "date"]}},
+          "op_specification": {
+            "algorithm": {
+              "calc": [{
+                "calc_attr": "avgSentiment",
+                "calc_expression": "avg(sentiment)"}],
+              "groupBy": ["date", "product_id", "region"]}}}
+      }}},
+    {"name": "sales", "node_id": "7",
+      "json":
+      {"sales": {
+        "constraints": {
+          "data_info": {
+            "attributes": [
+              {"product_id": {"type": "Varchar(15)"}},
+              {"region": {"type": "Varchar(15)"}},
+              {"date": {"type": "Integer"}},
+              {"quantity": {"type": "Integer"}},
+              {"price": {"type": "Integer"}}
+            ]}}
+      }}},
+    {"name": "filter by prod&reg", "node_id": "8",
+      "json":
+      {"filter_by_prod&reg": {
+        "constraints": {
+          "input": {
+            "data_info": {
+              "attributes": ["product_id", "date", "quantity", "price", "region"]}},
+          "output": {
+            "data_info": {
+              "attributes": ["product_id", "date", "quantity", "price", "region"]}},
+          "op_specification": {
+            "algorithm": {
+              "select": {
+                "select_condition": [
+                  "product_id = pId",
+                  "region = reg",
+                  "date = sD"
+                ]}}}}
+      }}},
+    {"name": "calc totalSales", "node_id": "9",
+      "json":
+      {"calc_totalSales": {
+        "constraints": {
+          "input": {
+            "data_info": {
+              "attributes": ["product_id", "date", "quantity", "price", "region"]}},
+          "output": {
+            "data_info": {
+              "attributes": ["product_id", "region", "date", "totalSales"]}},
+          "op_specification": {
+            "algorithm": {
+              "calc": [{
+                "calc_attr": "totalSales",
+                "calc_expression": "quantity*price"}],
+              "groupBy": ["date", "product_id", "region"]}}}
+      }}},
+    {"name": "join1 by prod&reg", "node_id": "10",
+      "json":
+      {"join1_by_prod&reg": {
+        "constraints": {
+          "input1": {
+            "data_info": {
+              "attributes": ["product_id", "avgSentiment", "region", "date"]}},
+          "input2": {
+            "data_info": {
+              "attributes": ["product_id", "region", "date", "totalSales"]}},
+          "output": {
+            "data_info": {
+              "attributes": ["product_id", "avgSentiment", "totalSales", "region", "date"]}},
+          "op_specification": {
+            "algorithm": {
+              "join": {
+                "join_condition": [
+                  "input1.product_id = input2.product_id",
+                  "input1.region = input2.region",
+                  "input1.date = input2.date"]}}}}
+      }}},
+    {"name": "campaign", "node_id": "11",
+      "json":
+      {"campaign": {
+        "constraints": {
+          "data_info": {
+            "attributes": [
+              {"campaign_id": {"type": "Varchar(15)"}},
+              {"product_id": {"type": "Varchar(15)"}},
+              {"region": {"type": "Varchar(15)"}},
+              {"start_date": {"type": "Integer"}},
+              {"end_date": {"type": "Integer"}}
+            ]}}
+      }}},
+    {"name": "filter by prod&reg", "node_id": "12",
+      "json":
+      {"filter_by_prod&reg": {
+        "constraints": {
+          "input": {
+            "data_info": {
+              "attributes": ["campaign_id", "product_id", "region", "start_date", "end_date"]}},
+          "output": {
+            "data_info": {
+              "attributes": ["campaign_id", "product_id", "region", "start_date", "end_date"]}},
+          "op_specification": {
+            "algorithm": {
+              "select": {
+                "select_condition": [
+                  "product_id = pId",
+                  "region = reg",
+                  "start_date >= sD"
+                ]}}}}
+      }}},
+    {"name": "join2 by prod&reg", "node_id": "13",
+      "json":
+      {"join2_by_prod&reg": {
+        "constraints": {
+          "input1": {
+            "data_info": {
+              "attributes": ["product_id", "avgSentiment", "totalSales", "region", "date"]}},
+          "input2": {
+            "data_info": {
+              "attributes": ["campaign_id", "product_id", "region", "start_date", "end_date"]}},
+          "output": {
+            "data_info": {
+              "attributes": ["campaign_id", "product_id", "avgSentiment", "totalSales", "region"]}},
+          "op_specification": {
+            "algorithm": {
+              "join": {
+                "join_condition": [
+                  "input1.product_id = input2.product_id",
+                  "input1.region = input2.region"]}}}}
+      }}},
+    {"name": "result", "node_id": "14",
+      "json":
+      {"result": {
+        "constraints": {
+          "data_info": {
+            "attributes": [
+              {"campaign_id": {"type": "Varchar(15)"}},
+              {"product_id": {"type": "Varchar(15)"}},
+              {"region": {"type": "Varchar(15)"}},
+              {"avgSentiment": {"type": "Integer"}},
+              {"totalSales": {"type": "Integer"}}
+            ]}}
+      }}}
+  ]
+}

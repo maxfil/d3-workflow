@@ -1,0 +1,27 @@
+extends layout
+append stylesheet
+  link(href='css/main.css', rel='stylesheet', media='screen')
+append content
+  div.toolbox
+    div#controls
+      button#loadbtn load workflow
+      input#uploadfile(type='file', style='display: none;')
+      button#savebtn save workflow
+      button#addnode add node
+    div#nodeProperties
+      label(for="nodeProperties") Node properties:
+      label(for="nodeTitle") Node title:
+      input#nodeTitle
+      label(for="taskName") Task/Data name:
+      input#taskName
+      label(for="taskMetaData") Meta Data:
+      textarea#taskMetaData
+  div#board
+    svg
+  br.clear
+append javascript
+  script(src='js/jquery-1.9.0.js')
+  script(src='js/d3.js')
+  script(src='js/FileSaver.js')
+  script(src='js/graph.js')
+  script(src='js/main.js')
