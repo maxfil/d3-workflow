@@ -5,7 +5,10 @@ wGraph = (el) ->
 # Add and remove elements on the graph object
 
   @addNode = (id, text) ->
-    nodes.push({'id': id, 'text':text})
+    console.log({'id': id, 'text':text})
+    nodes.push
+      'id': id
+      'text': text
     update()
     return
 
@@ -24,8 +27,12 @@ wGraph = (el) ->
     return
 
   @addLink = (sourceId, targetId) ->
+    console.log(sourceId)
+    console.log(targetId)
     sourceNode = findNode(sourceId)
     targetNode = findNode(targetId)
+    console.log(sourceNode)
+    console.log(targetNode)
     if sourceNode != undefined and targetNode != undefined
       links.push
         'source': sourceNode
@@ -53,26 +60,42 @@ wGraph = (el) ->
   w = $(el).innerWidth()
   h = $(el).innerHeight()
   vis = @vis = d3.select(el).append('svg:svg').attr('width', w).attr('height', h)
-  force = d3.layout.force().gravity(.05).distance(100).charge(-100).size([w, h])
+  force = d3.layout.force().gravity(.05).distance(90).charge(-300).size([w, h])
   nodes = force.nodes()
   links = force.links()
 
+  @clean = ->
+    vis.selectAll('svg > *').remove()
+    nodes.splice(0, nodes.length)
+    links.splice(0, links.length)
+    vis.append('defs').append('marker')
+    .attr('id', 'arrow')
+    .attr('viewBox', '0 -5 10 10')
+    .attr('refX', 10)
+    .attr('refY', 0)
+    .attr('markerWidth', 5)
+    .attr('markerHeight', 5)
+    .attr('orient', 'auto')
+    .append('path')
+    .attr('d', 'M0,-5L10,0L0,5')
+
   update = ->
-    link = vis.selectAll('line.link').data(links, (d) ->
+    link = vis.selectAll('line.link').data links, (d) ->
       d.source.id + '-' + d.target.id
-    )
-    link.enter().insert('line').attr('class', 'link')
+    link.enter().insert('line').attr('class', 'link').attr('marker-end', 'url(#arrow)')
     link.exit().remove()
 
     node = vis.selectAll('g.node').data(nodes, (d) -> d.id)
-    nodeEnter = node.enter().append('g').attr('class', 'node').call(force.drag)
+    nodeEnter = node.enter().append('g')
+    .attr('class', 'node').attr('id', (d) -> 'node'+d.id)
+    .attr('onclick', (d) -> 'selectNode('+d.id+')')
+    .call(force.drag)
     nodeEnter.append('rect').attr('class', 'rect')
     .attr('width', rectW).attr('height', rectH)
     .attr('x', -rectW/2).attr('y', -rectH/2)
 
     nodeEnter.append('ellipse').attr('class', 'ellipse').attr('cx', 0).attr('cy', 0)
     .attr('rx', (d) ->
-      console.log(d)
       if (d.type == 'circle')
         rectH/2
       else
@@ -82,35 +105,55 @@ wGraph = (el) ->
         rectH/2
       else
         rectH/2-2)
-    nodeEnter.append('text').attr('class', 'nodetext').attr('dx', 12).attr('dy', '.35em').text((d) -> d.text)
+    nodeEnter.append('text').attr('class', 'nodetext')
+    .attr('x', 0).attr('y', 4).attr('text-anchor', 'middle')
+    .text((d) -> d.text)
     node.exit().remove()
 
     force.on 'tick', ->
       link.attr('x1', (d) ->
-        d.source.x
+        x1 = d.source.x
+        x2 = d.target.x
+        y1 = d.source.y
+        y2 = d.target.y
+        k = rectW/rectH
+        if Math.abs(x1-x2) >= Math.abs(y1-y2)*k
+          x1-Math.sign(x1-x2)*rectW/2
+        else
+          x1-rectH/2/Math.abs(y1-y2)*(x1-x2)
       ).attr('y1', (d) ->
-        d.source.y
+        x1 = d.source.x
+        x2 = d.target.x
+        y1 = d.source.y
+        y2 = d.target.y
+        k = rectW/rectH
+        if Math.abs(x1-x2) <= Math.abs(y1-y2)*k
+          y1-Math.sign(y1-y2)*rectH/2
+        else
+          y1-rectW/2/Math.abs(x1-x2)*(y1-y2)
       ).attr('x2', (d) ->
         x1 = d.source.x
         x2 = d.target.x
         y1 = d.source.y
         y2 = d.target.y
+        k = rectW/rectH
         if Math.abs(x1-x2) >= Math.abs(y1-y2)*k
-          x2+rectW/2+Math.sign(x1-x2)*rectW/2
+          x2+Math.sign(x1-x2)*rectW/2
         else
-          x2+rectW/2+rectH/2/Math.abs(y1-y2)*(x1-x2)
-      ).attr 'y2', (d) ->
+          x2+rectH/2/Math.abs(y1-y2)*(x1-x2)
+      ).attr('y2', (d) ->
         x1 = d.source.x
         x2 = d.target.x
         y1 = d.source.y
         y2 = d.target.y
+        k = rectW/rectH
         if Math.abs(x1-x2) <= Math.abs(y1-y2)*k
-          y2+rectH/2+Math.sign(y1-y2)*rect_h/2
+          y2+Math.sign(y1-y2)*rectH/2
         else
-          y2+rectH/2+rectW/2/Math.abs(x1-x2)*(y1-y2)
-      node.attr('transform', (d) ->
-        'translate(' + d.x + ',' + d.y + ')'
+          y2+rectW/2/Math.abs(x1-x2)*(y1-y2)
       )
+      node.attr 'transform', (d) ->
+        'translate(' + d.x + ',' + d.y + ')'
       return
     # Restart the force layout.
     force.start()
