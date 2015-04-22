@@ -4,11 +4,17 @@ wGraph = (el) ->
   rectH = 40
 # Add and remove elements on the graph object
 
-  @addNode = (id, text) ->
-    console.log({'id': id, 'text':text})
-    nodes.push
+  @addNode = (id, text, cl, x, y) ->
+    node = {
       'id': id
       'text': text
+      'cl': cl
+    }
+    if x != undefined and y != undefined
+      node.fixed = true
+      node.x = x
+      node.y = y
+    nodes.push node
     update()
     return
 
@@ -26,17 +32,14 @@ wGraph = (el) ->
       update()
     return
 
-  @addLink = (sourceId, targetId) ->
-    console.log(sourceId)
-    console.log(targetId)
+  @addLink = (sourceId, targetId, cl) ->
     sourceNode = findNode(sourceId)
     targetNode = findNode(targetId)
-    console.log(sourceNode)
-    console.log(targetNode)
     if sourceNode != undefined and targetNode != undefined
       links.push
         'source': sourceNode
         'target': targetNode
+        'cl': cl
       update()
     return
 
@@ -82,12 +85,22 @@ wGraph = (el) ->
   update = ->
     link = vis.selectAll('line.link').data links, (d) ->
       d.source.id + '-' + d.target.id
-    link.enter().insert('line').attr('class', 'link').attr('marker-end', 'url(#arrow)')
+    link.enter().insert('line').attr('marker-end', 'url(#arrow)')
+    .attr('class', (d) ->
+      if !d.cl
+        'link'
+      else
+        'link '+d.cl)
     link.exit().remove()
 
     node = vis.selectAll('g.node').data(nodes, (d) -> d.id)
     nodeEnter = node.enter().append('g')
-    .attr('class', 'node').attr('id', (d) -> 'node'+d.id)
+    .attr('class', (d) ->
+      if !d.cl
+        'node'
+      else
+        'node '+d.cl)
+    .attr('id', (d) -> 'node'+d.id)
     .attr('onclick', (d) -> 'selectNode('+d.id+')')
     .call(force.drag)
     nodeEnter.append('rect').attr('class', 'rect')

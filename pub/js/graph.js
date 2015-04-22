@@ -4,15 +4,19 @@ wGraph = function(el) {
   var findNode, findNodeIndex, force, h, links, nodes, rectH, rectW, update, vis, w;
   rectW = 70;
   rectH = 40;
-  this.addNode = function(id, text) {
-    console.log({
+  this.addNode = function(id, text, cl, x, y) {
+    var node;
+    node = {
       'id': id,
-      'text': text
-    });
-    nodes.push({
-      'id': id,
-      'text': text
-    });
+      'text': text,
+      'cl': cl
+    };
+    if (x !== void 0 && y !== void 0) {
+      node.fixed = true;
+      node.x = x;
+      node.y = y;
+    }
+    nodes.push(node);
     update();
   };
   this.removeNode = function(id) {
@@ -32,18 +36,15 @@ wGraph = function(el) {
       update();
     }
   };
-  this.addLink = function(sourceId, targetId) {
+  this.addLink = function(sourceId, targetId, cl) {
     var sourceNode, targetNode;
-    console.log(sourceId);
-    console.log(targetId);
     sourceNode = findNode(sourceId);
     targetNode = findNode(targetId);
-    console.log(sourceNode);
-    console.log(targetNode);
     if (sourceNode !== void 0 && targetNode !== void 0) {
       links.push({
         'source': sourceNode,
-        'target': targetNode
+        'target': targetNode,
+        'cl': cl
       });
       update();
     }
@@ -85,12 +86,24 @@ wGraph = function(el) {
     link = vis.selectAll('line.link').data(links, function(d) {
       return d.source.id + '-' + d.target.id;
     });
-    link.enter().insert('line').attr('class', 'link').attr('marker-end', 'url(#arrow)');
+    link.enter().insert('line').attr('marker-end', 'url(#arrow)').attr('class', function(d) {
+      if (!d.cl) {
+        return 'link';
+      } else {
+        return 'link ' + d.cl;
+      }
+    });
     link.exit().remove();
     node = vis.selectAll('g.node').data(nodes, function(d) {
       return d.id;
     });
-    nodeEnter = node.enter().append('g').attr('class', 'node').attr('id', function(d) {
+    nodeEnter = node.enter().append('g').attr('class', function(d) {
+      if (!d.cl) {
+        return 'node';
+      } else {
+        return 'node ' + d.cl;
+      }
+    }).attr('id', function(d) {
       return 'node' + d.id;
     }).attr('onclick', function(d) {
       return 'selectNode(' + d.id + ')';

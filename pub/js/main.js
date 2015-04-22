@@ -11,13 +11,13 @@ openWorkflow = function(w) {
   ref = w.nodes;
   for (i = j = 0, len = ref.length; j < len; i = ++j) {
     node = ref[i];
-    graph.addNode(i, node.name);
+    graph.addNode(i, node.name, node["class"], node.x, node.y);
   }
-  ref1 = w.edges;
+  ref1 = w.links;
   results = [];
   for (k = 0, len1 = ref1.length; k < len1; k++) {
     link = ref1[k];
-    results.push(graph.addLink(link.source, link.target));
+    results.push(graph.addLink(link.source, link.target, link["class"]));
   }
   return results;
 };
@@ -88,14 +88,14 @@ $(document).ready(function() {
     sourceId = parseInt(prompt('Please enter source id', ''));
     targetId = parseInt(prompt('Please enter target id', ''));
     graph.addLink(sourceId, targetId);
-    return workflow.edges.push({
+    return workflow.links.push({
       'source': sourceId,
       'target': targetId
     });
   });
 });
 
-$.getJSON('files/workflow.json', function(json) {
+$.getJSON('files/peak-detection.json', function(json) {
   return openWorkflow(json);
 });
 

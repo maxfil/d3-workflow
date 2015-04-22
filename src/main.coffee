@@ -5,9 +5,9 @@ openWorkflow = (w) ->
   workflow = w
   graph.clean()
   for node, i in w.nodes
-    graph.addNode(i, node.name)
-  for link in w.edges
-    graph.addLink(link.source, link.target)
+    graph.addNode(i, node.name, node.class, node.x, node.y)
+  for link in w.links
+    graph.addLink(link.source, link.target, link.class)
 
 loadFile = ->
   input = $('#uploadfile')[0]
@@ -60,11 +60,11 @@ $(document).ready ->
     sourceId = parseInt(prompt('Please enter source id', ''))
     targetId = parseInt(prompt('Please enter target id', ''))
     graph.addLink(sourceId, targetId)
-    workflow.edges.push
+    workflow.links.push
       'source': sourceId
       'target': targetId
 
-$.getJSON 'files/workflow.json', (json) ->
+$.getJSON 'files/peak-detection.json', (json) ->
   openWorkflow(json)
 
 graph = new wGraph('#board')
