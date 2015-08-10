@@ -9,18 +9,44 @@ append content
       button#savebtn save workflow
       button#addnode add node
       button#addlink add link
-    div#nodeProperties
-      label(for="nodeProperties") Node properties:
-      label(for="nodeTitle") Node title:
-      input#nodeTitle
-      label(for="taskName") Task/Data name:
-      input#taskName
-      label(for="taskMetaData") Meta Data:
-      textarea#taskMetaData
+      button#analyse analyse
+      button#optimise optimise
+    div#nodeBoard
+      div
+        label(for="nodeBoard") Node detailed view:
+      div
+        label(for="nodeTitle") Node title:
+        input#nodeTitle
+      div#tasksBoard
+      div#taskControls
+        button#addtask add task
+        //button#addtasklink add link
+        button#library library
+      div#libraryOperators.hide
+        button#filterJoin Filter Join
+        button#groupBySort groupBy Sort
+        button#PeakDetection PeakDetection
+        button#tfIdf Tf-Idf
+        button#kMeans k-Means
+      div
+        label(for="taskName") Task/Data name:
+        input#taskName
+      div
+        label(for="taskMetaData") Meta Data:
+      div
+        textarea#taskMetaData
+    div#linkBoard.hide
+      div
+        label(for="linkBoard") Link detailed view:
+      div
+        label(for="linkMetaData") Meta Data:
+      div
+        textarea#linkMetaData
   div#board
   br.clear
 append javascript
   script(src='js/jquery-1.9.0.js')
+  script(src='js/hjson.min.js')
   script(src='js/d3.js')
   script(src='js/FileSaver.js')
   script(src='js/graph.js')

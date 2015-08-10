@@ -1,151 +1,199 @@
 {
   "nodes": [
     {
+      "id": 0,
       "name": "tweets",
       "class": "circle",
       "x": 300,
-      "y": 200
+      "y": 200,
+      "fixed": true
     },
     {
+      "id": 1,
       "name": "buffer",
       "x": 200,
-      "y": 200
+      "y": 200,
+      "fixed": true
     },
     {
+      "id": 2,
       "name": "filter",
       "x": 200,
-      "y": 300
+      "y": 300,
+      "fixed": true
     },
     {
+      "id": 3,
       "name": "convert",
       "x": 300,
-      "y": 300
+      "y": 300,
+      "fixed": true
     },
     {
+      "id": 4,
       "name": "products",
       "class": "circle",
       "x": 400,
-      "y": 200
-    },
-    {"name": "select",
-      "x": 400,
-      "y": 300
-    },
-    {"name": "avgSent",
-      "x": 500,
-      "y": 300
+      "y": 200,
+      "fixed": true
     },
     {
+      "id": 5,
+      "name": "select",
+      "x": 400,
+      "y": 300,
+      "fixed": true
+    },
+    {
+      "id": 6,
+      "name": "avgSent",
+      "x": 500,
+      "y": 300,
+      "fixed": true
+    },
+    {
+      "id": 7,
       "name": "sales",
       "class": "circle",
       "x": 300,
-      "y": 400
+      "y": 400,
+      "fixed": true
     },
     {
+      "id": 8,
       "name": "filter",
       "x": 400,
-      "y": 400
+      "y": 400,
+      "fixed": true
     },
     {
+      "id": 9,
       "name": "totalSales",
       "x": 500,
-      "y": 400
+      "y": 400,
+      "fixed": true
     },
     {
+      "id": 10,
       "name": "join1",
       "x": 600,
-      "y": 300
+      "y": 300,
+      "fixed": true
     },
     {
+      "id": 11,
       "name": "campaign",
       "class": "circle",
       "x": 600,
-      "y": 200
+      "y": 200,
+      "fixed": true
     },
     {
+      "id": 12,
       "name": "filter",
       "x": 700,
-      "y": 200
+      "y": 200,
+      "fixed": true
     },
     {
+      "id": 13,
       "name": "join2",
       "x": 700,
-      "y": 300
+      "y": 300,
+      "fixed": true
     },
     {
+      "id": 14,
       "name": "result",
       "class": "circle",
       "x": 700,
-      "y": 400
+      "y": 400,
+      "fixed": true
     }
   ],
   "links": [
     {
-      "source": 0,
-      "target": 1,
+      "id": 0,
+      "sourceId": 0,
+      "targetId": 1,
       "class": "dashed"
     },
     {
-      "source": 1,
-      "target": 2
+      "id": 1,
+      "sourceId": 1,
+      "targetId": 2
     },
     {
-      "source": 2,
-      "target": 3
+      "id": 2,
+      "sourceId": 2,
+      "targetId": 3
     },
     {
-      "source": 3,
-      "target": 5
+      "id": 3,
+      "sourceId": 3,
+      "targetId": 5
     },
     {
-      "source": 4,
-      "target": 5,
+      "id": 4,
+      "sourceId": 4,
+      "targetId": 5,
       "class": "dashed"
     },
     {
-      "source": 5,
-      "target": 6
+      "id": 5,
+      "sourceId": 5,
+      "targetId": 6
     },
     {
-      "source": 6,
-      "target": 10
+      "id": 6,
+      "sourceId": 6,
+      "targetId": 10
     },
     {
-      "source": 7,
-      "target": 8,
+      "id": 7,
+      "sourceId": 7,
+      "targetId": 8,
       "class": "dashed"
     },
     {
-      "source": 8,
-      "target": 9
+      "id": 8,
+      "sourceId": 8,
+      "targetId": 9
     },
     {
-      "source": 9,
-      "target": 10
+      "id": 9,
+      "sourceId": 9,
+      "targetId": 10
     },
     {
-      "source": 10,
-      "target": 13
+      "id": 10,
+      "sourceId": 10,
+      "targetId": 13
     },
     {
-      "source": 11,
-      "target": 12,
+      "id": 11,
+      "sourceId": 11,
+      "targetId": 12,
       "class": "dashed"
     },
     {
-      "source": 12,
-      "target": 13
+      "id": 12,
+      "sourceId": 12,
+      "targetId": 13
     },
     {
-      "source": 13,
-      "target": 14,
+      "id": 13,
+      "sourceId": 13,
+      "targetId": 14,
       "class": "dashed"
     }
   ],
   "tasks": [
     {
+      "id": 0,
       "name": "tweets reviews",
-      "node_id": "0",
+      "class": "circle",
+      "nodeId": 0,
       "json": {
         "tweets&reviews": {
           "constraints": {
@@ -162,15 +210,19 @@
       }
     },
     {
+      "id": 1,
       "name": "buffer",
-      "node_id": "1",
+      "class": "circle",
+      "nodeId": 1,
       "json": {}
     },
     {
+      "id": 2,
       "name": "filter by reg&date",
-      "node_id": "2",
+      "class": "circle",
+      "nodeId": 2,
       "json": {
-        "filter_by_reg&date": {
+        "filter": {
           "constraints": {
             "input": {
               "data_info": {
@@ -205,10 +257,12 @@
       }
     },
     {
+      "id": 3,
       "name": "calc&conv",
-      "node_id": "3",
+      "class": "circle",
+      "nodeId": 3,
       "json": {
-        "calc&conv": {
+        "calc": {
           "constraints": {
             "input": {
               "data_info": {
@@ -256,8 +310,10 @@
       }
     },
     {
+      "id": 4,
       "name": "products",
-      "node_id": "4",
+      "class": "circle",
+      "nodeId": 4,
       "json": {
         "products": {
           "constraints": {
@@ -272,10 +328,12 @@
       }
     },
     {
+      "id": 5,
       "name": "select product",
-      "node_id": "5",
+      "class": "circle",
+      "nodeId": 5,
       "json": {
-        "select_product": {
+        "select": {
           "constraints": {
             "input1": {
               "data_info": {
@@ -319,10 +377,12 @@
       }
     },
     {
+      "id": 6,
       "name": "calc avgSent",
-      "node_id": "6",
+      "class": "circle",
+      "nodeId": 6,
       "json": {
-        "calc_avgSent": {
+        "calc": {
           "constraints": {
             "input": {
               "data_info": {
@@ -364,8 +424,10 @@
       }
     },
     {
+      "id": 7,
       "name": "sales",
-      "node_id": "7",
+      "class": "circle",
+      "nodeId": 7,
       "json": {
         "sales": {
           "constraints": {
@@ -383,10 +445,12 @@
       }
     },
     {
+      "id": 8,
       "name": "filter by prod&reg",
-      "node_id": "8",
+      "class": "circle",
+      "nodeId": 8,
       "json": {
-        "filter_by_prod&reg": {
+        "filter": {
           "constraints": {
             "input": {
               "data_info": {
@@ -426,10 +490,12 @@
       }
     },
     {
+      "id": 9,
       "name": "calc totalSales",
-      "node_id": "9",
+      "class": "circle",
+      "nodeId": 9,
       "json": {
-        "calc_totalSales": {
+        "calc": {
           "constraints": {
             "input": {
               "data_info": {
@@ -472,8 +538,10 @@
       }
     },
     {
+      "id": 10,
       "name": "join1 by prod&reg",
-      "node_id": "10",
+      "class": "circle",
+      "nodeId": 10,
       "json": {
         "join1_by_prod&reg": {
           "constraints": {
@@ -524,8 +592,10 @@
       }
     },
     {
+      "id": 11,
       "name": "campaign",
-      "node_id": "11",
+      "class": "circle",
+      "nodeId": 11,
       "json": {
         "campaign": {
           "constraints": {
@@ -543,10 +613,12 @@
       }
     },
     {
+      "id": 12,
       "name": "filter by prod&reg",
-      "node_id": "12",
+      "class": "circle",
+      "nodeId": 12,
       "json": {
-        "filter_by_prod&reg": {
+        "filter": {
           "constraints": {
             "input": {
               "data_info": {
@@ -586,8 +658,10 @@
       }
     },
     {
+      "id": 13,
       "name": "join2 by prod&reg",
-      "node_id": "13",
+      "class": "circle",
+      "nodeId": 13,
       "json": {
         "join2_by_prod&reg": {
           "constraints": {
@@ -639,8 +713,10 @@
       }
     },
     {
+      "id": 14,
       "name": "result",
-      "node_id": "14",
+      "class": "circle",
+      "nodeId": 14,
       "json": {
         "result": {
           "constraints": {
@@ -657,5 +733,8 @@
         }
       }
     }
+  ],
+  "taskLinks": [
+
   ]
 }

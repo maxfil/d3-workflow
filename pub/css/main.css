@@ -1,46 +1,60 @@
 div.toolbox {
     float: left;
 }
-div#controls {
-    width: 150px;
+#controls {
+    width: 300px;
+    padding: 0 25px;
+}
+#nodeBoard, #linkBoard {
+    width: 300px;
     padding: 25px;
 }
-div#nodeProperties {
-    width: 150px;
-    padding: 25px;
+#tasksBoard {
+    width: 300px;
+    height: 200px;
+    border: 1px black solid;
 }
-#nodeProperties label {
-    display: block;
+#nodeBoard div, #linkBoard div {
+    margin: 15px 0;
 }
-label[for=nodeProperties] {
-    margin-bottom: 10px;
-    margin-left: 25px;
+label[for=nodeBoard], label[for=linkBoard] {
+    margin-left: 75px;
     text-decoration: underline;
 }
-#nodeProperties input, #nodeProperties textarea {
-    display: block;
-    width: 150px;
+#nodeBoard input, #nodeBoard textarea, #linkBoard input, #linkBoard textarea {
     padding: 3px 5px;
-    margin: 5px 0 20px;
+    width: 150px;
 }
-#nodeProperties textarea {
-    height: 150px;
+#nodeBoard textarea, #linkBoard textarea {
+    width: 290px;
+    height: 200px;
 }
 #controls button {
-    display: block;
-    margin: 10px 25px;
+    margin: 10px 20px;
     height: 25px;
     width: 100px;
 }
+#nodeBoard #tasksBoard {
+    margin-bottom: 10px;
+}
+#nodeBoard #taskControls {
+    margin-top: 10px;
+}
+#taskControls button {
+    margin: 10px;
+    height: 25px;
+    width: 75px;
+}
 
-div#board {
+#board {
     float: right;
-    width: 1100px;
+    width: 900px;
     height: 600px;
 }
 br.clear {
     clear:both;
 }
+
 .node .rect {
     stroke: black;
     fill: white;
@@ -49,6 +63,12 @@ br.clear {
 .node.circle .rect {
     stroke: none;
     fill: none;
+}
+.node.selected .rect {
+    stroke: #2196F3;
+}
+.node.selected.circle .rect {
+    stroke: none;
 }
 
 .ellipse {
@@ -60,6 +80,9 @@ br.clear {
     fill: white;
     stroke-width: 1.5px;
 }
+.node.selected.circle .ellipse {
+    stroke: #2196F3;
+}
 
 .link {
     stroke: black;
@@ -70,6 +93,18 @@ br.clear {
     stroke-dasharray: 0,2 1;
 }
 
+.link.selected {
+    stroke: #2196F3;
+}
+
+.hide {
+    display: none;
+}
+
 text.nodetext {
     font-size: 12px;
+}
+
+button#addlink.active {
+    border-color: #2196F3;
 }

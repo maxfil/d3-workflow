@@ -1,68 +1,87 @@
 {
   "nodes": [
     {
+      "id": 0,
       "name": "calls",
       "class": "circle",
       "x": 200,
-      "y": 200
+      "y": 200,
+      "fixed": true
     },
     {
+      "id": 1,
       "name": "select",
       "x": 300,
-      "y": 200
+      "y": 200,
+      "fixed": true
     },
     {
+      "id": 2,
       "name": "calc&archive",
       "x": 400,
-      "y": 200
+      "y": 200,
+      "fixed": true
     },
     {
+      "id": 3,
       "name": "history",
       "class": "circle",
       "x": 400,
-      "y": 300
+      "y": 300,
+      "fixed": true
     },
     {
+      "id": 4,
       "name": "calc2",
       "x": 500,
-      "y": 200
+      "y": 200,
+      "fixed": true
     },
     {
+      "id": 5,
       "name": "result",
       "class": "circle",
       "x": 600,
-      "y": 200
+      "y": 200,
+      "fixed": true
     }
   ],
   "links": [
     {
-      "source": 0,
-      "target": 1,
+      "id": 0,
+      "sourceId": 0,
+      "targetId": 1,
       "class": "dashed"
     },
     {
-      "source": 1,
-      "target": 2
+      "id": 1,
+      "sourceId": 1,
+      "targetId": 2
     },
     {
-      "source": 2,
-      "target": 3,
+      "id": 2,
+      "sourceId": 2,
+      "targetId": 3,
       "class": "dashed"
     },
     {
-      "source": 2,
-      "target": 4
+      "id": 3,
+      "sourceId": 2,
+      "targetId": 4
     },
     {
-      "source": 4,
-      "target": 5,
+      "id": 4,
+      "sourceId": 4,
+      "targetId": 5,
       "class": "dashed"
     }
   ],
   "tasks": [
     {
+      "id": 0,
       "name": "calls",
-      "node_id": "0",
+      "class": "circle",
+      "nodeId": 0,
       "json": {
         "calls": {
           "constraints": {
@@ -80,8 +99,10 @@
       }
     },
     {
+      "id": 1,
       "name": "select",
-      "node_id": "1",
+      "class": "circle",
+      "nodeId": 1,
       "json": {
         "select": {
           "constraints": {
@@ -118,8 +139,10 @@
       }
     },
     {
+      "id": 2,
       "name": "calc&archive",
-      "node_id": "2",
+      "class": "circle",
+      "nodeId": 2,
       "json": {
         "calc&archive": {
           "constraints": {
@@ -148,13 +171,17 @@
       }
     },
     {
+      "id": 3,
       "name": "history",
-      "node_id": "3",
+      "class": "circle",
+      "nodeId": 3,
       "json": {}
     },
     {
+      "id": 4,
       "name": "calc2",
-      "node_id": "4",
+      "class": "circle",
+      "nodeId": 4,
       "json": {
         "calc2": {
           "constraints": {
@@ -195,9 +222,14 @@
       }
     },
     {
+      "id": 5,
       "name": "result",
-      "node_id": "5",
+      "class": "circle",
+      "nodeId": 5,
       "json": {}
     }
+  ],
+  "taskLinks": [
+
   ]
 }
