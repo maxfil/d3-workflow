@@ -2,6 +2,7 @@
 import sys, os
 import json
 import ruamel.yaml as yaml
+import copy
 
 def analyse(wl):
     for node in wl['nodes']:
@@ -23,13 +24,13 @@ def analyse(wl):
             link['analysis']['data_info'] = {}
             if (task['nodeId'] == inp):
                 if ('json' in task.keys()):
-                    inpdict = task['json'].values()[0].values()[0]
+                    inpdict = copy.deepcopy(task['json'].values()[0].values()[0])
                     # if ('data' in task['json'].keys()):
                     #     inpdict = task['json'].values()[0].values()[0]
                     # else:
                     #     inpdict = task['json'].values()[0].values()[0]['output']
                     # link['analysis']['data_info'] = inpdict['data_info'].copy()
-                    link['analysis']['data_info'] = inpdict.copy()
+                    link['analysis']['data_info'].update(inpdict)
             if (task['nodeId'] == out):
                 if ('json' in task.keys()):
                     outdict = task['json'].values()[0].values()[0]
@@ -39,18 +40,19 @@ def analyse(wl):
                     #     outdict = task['json'].values()[0].values()[0]['input']
                     # link['analysis']['data_info'].update(outdict['data_info'])
                     link['analysis']['data_info'].update(outdict)
-        if ('engine' in inpdict.keys() and 'engine' in outdict.keys()):
-            if (inpdict['engine']['DB'] == outdict['engine']['DB']):
-                link['analysis']['engine'] = inpdict['engine']
-            else:
-                link['analysis']['engine'] = {}
-                link['analysis']['engine']['from'] = inpdict['engine']
-                link['analysis']['engine']['to'] = outdict['engine']
-                link['analysis']['message'].append('formats convertation')
-        elif ('engine' in inpdict.keys()):
-            link['analysis']['engine'] = inpdict['engine']
-        elif ('engine' in outdict.keys()):
-            link['analysis']['engine'] = outdict['engine']
+            if ('engine' in inpdict.keys() and 'engine' in outdict.keys()):
+                if (inpdict['engine']['DB'] == outdict['engine']['DB']):
+                    link['analysis']['engine'] = copy.deepcopy(inpdict['engine'])
+                else:
+                    link['analysis']['engine'] = {}
+                    link['analysis']['engine']['from'] = copy.deepcopy(inpdict['engine'])
+                    link['analysis']['engine']['to'] = copy.deepcopy(outdict['engine'])
+                    link['analysis']['message'].append('formats convertation')
+            elif ('engine' in inpdict.keys()):
+                link['analysis']['engine'] = copy.deepcopy(inpdict['engine'])
+            elif ('engine' in outdict.keys()):
+                link['analysis']['engine'] = copy.deepcopy(outdict['engine'])
+        print link['analysis']
     return wl
 
 def optimise(wl):

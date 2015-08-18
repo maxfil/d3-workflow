@@ -317,6 +317,7 @@ $(document).ready ->
       success: (data, textStatus, jqXHR) ->
 #        console.log(data)
         newWorkflow = JSON.parse(data)
+        newWorkflow.taskLinks = newWorkflow.taskLinks || []
         openWorkflow(newWorkflow)
       error: (jqXHR, textStatus, errorThrown) ->
         console.log(textStatus)
@@ -333,6 +334,7 @@ $(document).ready ->
       type: 'POST',
       success: (data, textStatus, jqXHR) ->
         newWorkflow = JSON.parse(data)
+        newWorkflow.taskLinks = newWorkflow.taskLinks || []
         openWorkflow(newWorkflow)
       error: (jqXHR, textStatus, errorThrown) ->
         console.log(textStatus)

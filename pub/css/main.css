@@ -29,7 +29,7 @@ label[for=nodeBoard], label[for=linkBoard] {
     width: 290px;
     height: 200px;
 }
-#controls button {
+#controls button, #taskControls button, #libraryOperators button {
     margin: 10px 20px;
     height: 25px;
     width: 100px;
@@ -40,10 +40,8 @@ label[for=nodeBoard], label[for=linkBoard] {
 #nodeBoard #taskControls {
     margin-top: 10px;
 }
-#taskControls button {
-    margin: 10px;
-    height: 25px;
-    width: 75px;
+#nodeBoard #libraryOperators {
+    margin-top: 10px;
 }
 
 #board {
